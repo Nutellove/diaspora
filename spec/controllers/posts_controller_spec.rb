@@ -101,18 +101,14 @@ describe PostsController do
 
         it 'assumes guids less than 8 chars are ids and not guids' do
           p = Post.where(:id => @status.id.to_s)
-          Post.should_receive(:where)
-              .with(hash_including(:id => @status.id.to_s))
-              .and_return(p)
+          Post.should_receive(:where).with(hash_including(:id => @status.id.to_s)).and_return(p)
           get :show, :id => @status.id
           response.should be_success
         end
 
         it 'assumes guids more than (or equal to) 8 chars are actually guids' do
           p = Post.where(:guid => @status.guid)
-          Post.should_receive(:where)
-              .with(hash_including(:guid => @status.guid))
-              .and_return(p)
+          Post.should_receive(:where).with(hash_including(:guid => @status.guid)).and_return(p)
           get :show, :id => @status.guid
           response.should be_success
         end
