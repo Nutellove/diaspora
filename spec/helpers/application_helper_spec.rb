@@ -56,11 +56,11 @@ describe ApplicationHelper do
       end
 
       it 'includes jquery.js from google cdn' do
-        jquery_include_tag.should match(/googleapis\.com/)
+        jquery_include_tag.should match /googleapis\.com/
       end
 
       it 'falls back to asset pipeline on cdn failure' do
-        jquery_include_tag.should match(/document\.write/)
+        jquery_include_tag.should match /document\.write/
       end
     end
 
@@ -70,23 +70,23 @@ describe ApplicationHelper do
       end
 
       it 'includes jquery.js from asset pipeline' do
-        jquery_include_tag.should match(/jquery\.js/)
-        jquery_include_tag.should_not match(/googleapis\.com/)
+        jquery_include_tag.should match /jquery\.js/
+        jquery_include_tag.should_not match /googleapis\.com/
       end
     end
 
     it 'includes jquery_ujs.js' do
-      jquery_include_tag.should match(/jquery_ujs\.js/)
+      jquery_include_tag.should match /jquery_ujs\.js/
     end
 
     it "disables ajax caching" do
-      jquery_include_tag.should match(/jQuery\.ajaxSetup/)
+      jquery_include_tag.should match /jQuery\.ajaxSetup/
     end
   end
 
   describe '#pod_name' do
     it 'defaults to Diaspora*' do
-      pod_name.should  match /DIASPORA/i
+      pod_name.should match /DIASPORA/i # if !AppConfig[:pod_name].present? (?)
     end
 
     it 'displays the supplied AppConfig[:pod_name] if it is set' do
