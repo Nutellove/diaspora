@@ -22,7 +22,7 @@ other ideas what we could do
  check if you have mysql and/or postgres installed, point to wiki page if neither is found.
  (maybe even switch database.yml if this is the case?)
 
- make it work if you have just cloned diapsora and want a quick setup, or
+ make it work if you have just cloned diaspora and want a quick setup, or
  support magic install, like this http://docs.meteor.com/#quickstart
 '
 
