@@ -55,7 +55,7 @@ describe ApplicationHelper do
         AppConfig[:jquery_cdn] = true
       end
 
-      it 'inclues jquery.js from google cdn' do
+      it 'includes jquery.js from google cdn' do
         jquery_include_tag.should match(/googleapis\.com/)
       end
 
@@ -75,7 +75,7 @@ describe ApplicationHelper do
       end
     end
 
-    it 'inclues jquery_ujs.js' do
+    it 'includes jquery_ujs.js' do
       jquery_include_tag.should match(/jquery_ujs\.js/)
     end
 
