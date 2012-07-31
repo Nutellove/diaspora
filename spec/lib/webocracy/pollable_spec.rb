@@ -40,6 +40,14 @@ describe Webocracy::Pollable do
   end
 
   describe '#get_mean' do
+    it 'initially is 0 (without decisions)' do
+      @proposition.get_mean.should == 0
+    end
+    it 'has the value of the decision if there is only one' do
+      d = Decision.new({ :value => 42 })
+      @proposition.decisions << d
+      @proposition.get_mean.should == 42
+    end
     it 'holds the mean value of the values of the decisions' do
       d1 = Decision.new({ :value => 1 })
       d2 = Decision.new({ :value => 2 })
