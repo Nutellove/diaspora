@@ -16,7 +16,7 @@ describe Webocracy::Pollable do
     end
     it 'has the value of the decision if there is only one' do
       d = Decision.new({ :value => 1 })
-      @proposition.decisions << d
+      @proposition << d
       @proposition.get_sum.should == 1
     end
     it 'holds the sum of the values of the decisions' do
