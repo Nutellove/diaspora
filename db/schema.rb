@@ -110,7 +110,8 @@ ActiveRecord::Schema.define(:version => 20120731032247) do
 
   create_table "decisions", :force => true do |t|
     t.integer  "value",                   :default => 0
-    t.integer  "proposition_id"
+    t.integer  "target_id"
+    t.string   "target_type"
     t.integer  "author_id"
     t.string   "guid"
     t.text     "author_signature"
@@ -121,7 +122,7 @@ ActiveRecord::Schema.define(:version => 20120731032247) do
 
   add_index "decisions", ["author_id"], :name => "decisions_author_id_fk"
   add_index "decisions", ["guid"], :name => "index_decisions_on_guid", :unique => true
-  add_index "decisions", ["proposition_id"], :name => "index_decisions_on_proposition_id"
+  add_index "decisions", ["target_id"], :name => "index_decisions_on_target_id"
 
   create_table "invitation_codes", :force => true do |t|
     t.string   "token"
