@@ -6,6 +6,6 @@
 
 class Proposition < Post
 
-  include Webocracy::Pollable
+  include Webocracy::YesNoMaybePollable
 
 end

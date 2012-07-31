@@ -10,30 +10,11 @@
 # - get syndicated data on the decisions (eg: final decision) (todo)
 # - be a base for different types of polls (YesNoMaybePollable, SingleChoicePollable, MultipleChoicePollable, ValueInRangePollable) (todo)
 module Webocracy
-  module Pollable
+  module YesNoMaybePollable
+    include Webocracy::Pollable
 
-    def self.included(base)
-      base.extend InstanceMethods
+    def self.included(model)
+      make_pollable model
     end
-
-    def get_sum
-      sum = 0
-      return sum unless decisions
-      decisions.each do |decision|
-        sum += decision.value
-      end
-      sum
-    end
-
-    module InstanceMethods
-
-      def make_pollable(model)
-        model.instance_eval do
-          has_many :decisions, :class_name => 'Decision',  :dependent => :delete_all, :as => :target
-        end
-      end
-
-    end
-
   end
 end
