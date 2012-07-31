@@ -16,13 +16,21 @@ module Webocracy
       base.extend InstanceMethods
     end
 
+    def count
+      decisions.length
+    end
+
     def get_sum
       sum = 0
-      return sum unless decisions
+      return sum unless !decisions.empty?
       decisions.each do |decision|
         sum += decision.value
       end
       sum
+    end
+
+    def get_mean
+      count > 0 ? get_sum / count : get_sum
     end
 
     module InstanceMethods
