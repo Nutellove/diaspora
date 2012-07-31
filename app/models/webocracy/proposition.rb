@@ -2,7 +2,9 @@
 #   licensed under the Affero General Public License version 3 or later.  See
 #   the COPYRIGHT file.
 
-class Proposition < Diaspora::Post
+# Basically, a Post that is YesNoMaybePollable
+
+class Proposition < Post
 
   include Webocracy::Pollable
 

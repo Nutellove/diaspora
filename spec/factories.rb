@@ -204,6 +204,20 @@ FactoryGirl.define do
     association(:post, :factory => :status_message)
   end
 
+  # Webocracy stuff
+  factory :proposition do
+    sequence(:text) { |n| "Propal #{n}" }
+    association :author, :factory => :person
+    after_build do |prop|
+      prop.diaspora_handle = prop.author.diaspora_handle
+    end
+  end
+
+  #factory :decision do
+  #  association :author, :factory => :person
+  #  association :target, :factory => :proposition
+  #end
+
   #templates
   factory(:status_with_photo_backdrop, :parent => :status_message_with_photo)
 
