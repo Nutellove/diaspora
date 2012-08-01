@@ -11,16 +11,16 @@ FactoryGirl.define do
   factory :webocracy_generic_proposition, :class => Webocracy::GenericProposition do
     sequence(:text) { |n| "Generic Propal #{n}" }
     association :author, :factory => :person
-    after_build do |prop|
-      prop.diaspora_handle = prop.author.diaspora_handle
+    after_build do |this|
+      this.diaspora_handle = this.author.diaspora_handle
     end
   end
 
   factory :webocracy_yes_no_maybe_proposition, :class => Webocracy::YesNoMaybeProposition do
     sequence(:text) { |n| "YNM Propal #{n}" }
     association :author, :factory => :person
-    after_build do |prop|
-      prop.diaspora_handle = prop.author.diaspora_handle
+    after_build do |this|
+      this.diaspora_handle = this.author.diaspora_handle
     end
   end
 
@@ -28,6 +28,5 @@ FactoryGirl.define do
     association :author, :factory => :person
     #association :target, :factory => :proposition
   end
-
 
 end

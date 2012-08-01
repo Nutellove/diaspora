@@ -15,8 +15,7 @@ module Webocracy
       extend HelperMethods
     end
 
-    describe 'opening & closing' do
-
+    describe 'Opening & Closing' do
       it 'should be open at first' do
         @generic_pollable.closed.should == false
       end
@@ -25,7 +24,6 @@ module Webocracy
         @generic_pollable.closed = true
         @generic_pollable.closed.should == true
       end
-
     end
 
     describe '#<< (adding a decision)' do
@@ -144,6 +142,11 @@ module Webocracy
       it 'works with negative decision values' do
         [-5, -25, -30].each { |v| @generic_pollable << new_decision(v) }
         @generic_pollable.get_mean.should == -20
+      end
+      it 'works with floating results' do
+        [0, 5].each { |v| @generic_pollable << new_decision(v) }
+        @generic_pollable.get_mean.should == Rational(5,2)
+        @generic_pollable.get_mean.should == 2.5
       end
     end
 
