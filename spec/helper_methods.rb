@@ -73,3 +73,15 @@ module HelperMethods
     Conversation.create!(create_hash)
   end
 end
+
+module Webocracy
+  module HelperMethods
+    def new_decision (value, author=nil)
+      if nil == author
+        FactoryGirl.build(:webocracy_decision_without_target, :value => value)
+      else
+        FactoryGirl.build(:webocracy_decision_without_target, {:value => value, :author => author})
+      end
+    end
+  end
+end
