@@ -16,7 +16,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :yes_no_maybe_proposition, :class => Webocracy::YesNoMaybeProposition do
+  factory :webocracy_yes_no_maybe_proposition, :class => Webocracy::YesNoMaybeProposition do
     sequence(:text) { |n| "YNM Propal #{n}" }
     association :author, :factory => :person
     after_build do |prop|

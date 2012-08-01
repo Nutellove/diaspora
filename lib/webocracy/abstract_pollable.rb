@@ -2,6 +2,8 @@
 #   licensed under the Affero General Public License version 3 or later.  See
 #   the COPYRIGHT file.
 
+class Webocracy::InvalidDecision < StandardError; end
+
 # A Pollable entity will receive Decisions from Citizens.
 # It also may :
 # - be open or closed (todo)
@@ -36,16 +38,21 @@ module Webocracy
     def << (decision)
       case decision
         when Decision
-          raise "Decision has not valid values" unless is_valid decision
-          self.decisions << decision
+          if is_valid decision
+            self.decisions << decision
+          else
+            raise InvalidDecision, "Not valid value '#{decision.value}'"
+          end
         else
-          raise "Unknown decision type '#{decision.class.base_class.to_s}'"
+          raise InvalidDecision, "Unknown decision type '#{decision.class.base_class.to_s}'"
+          #raise "Unknown decision type '#{decision.class.base_class.to_s}'"
       end
     end
 
     # Is the passed decision a valid one ?
     # @return bool
     def is_valid(decision)
+
       true
     end
 
