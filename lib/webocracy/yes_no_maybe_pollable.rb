@@ -11,28 +11,12 @@ module Webocracy
 
     def self.included(model)
       make_pollable model
-
-      #model.instance_eval do
-      #
-      #  include InstanceMethods
-      #
-      #end
-
-
-
-
     end
-
-    #module InstanceMethods
-    #
-
-    #
-    #end
 
 
     # Make sure added decisions' values are -1, 0 or 1
     def is_valid(decision)
-      -1 === decision.value || 0 === decision.value || 1 === decision.value
+      [-1,0,1].include? decision.value
     end
   end
 end

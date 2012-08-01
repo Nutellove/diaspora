@@ -12,7 +12,7 @@ module Webocracy
     end
 
     def is_valid(decision)
-      true
+      true # model makes sure value is already an integer
     end
   end
 end

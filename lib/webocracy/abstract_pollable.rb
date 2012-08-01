@@ -52,8 +52,7 @@ module Webocracy
     # Is the passed decision a valid one ?
     # @return bool
     def is_valid(decision)
-
-      true
+      raise InvalidDecision, "is_valid must be overridden"
     end
 
     module ClassMethods
