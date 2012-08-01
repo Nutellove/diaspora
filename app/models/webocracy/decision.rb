@@ -3,35 +3,36 @@
 #   the COPYRIGHT file.
 
 # A Decision is explicitly made by a Citizen on a Pollable entity
-# It holds an integer value or nil
-class Webocracy::Decision < Federated::Relayable
-  class Generator < Federated::Generator
-    def self.federated_class
-      Decision
+# It holds an integer value
+module Webocracy
+  class Decision < Federated::Relayable
+    class Generator < Federated::Generator
+      def self.federated_class
+        Decision
+      end
+
+      def relayable_options
+        {:target => @target, :value => 0}
+      end
     end
 
-    def relayable_options
-      {:target => @target, :value => nil}
+    after_create do
+      #self.parent.update_decisions_status
+    end
+
+    after_destroy do
+      #self.parent.update_decisions_status
+    end
+
+    xml_attr :value
+
+    # NOTE API V1 to be extracted
+    acts_as_api
+    api_accessible :backbone do |t|
+      t.add :id
+      t.add :guid
+      t.add :author
+      t.add :created_at
     end
   end
-
-  after_create do
-    #self.parent.update_decisions_status
-  end
-
-  after_destroy do
-    #self.parent.update_decisions_status
-  end
-
-  xml_attr :value
-
-  # NOTE API V1 to be extracted
-  acts_as_api
-  api_accessible :backbone do |t|
-    t.add :id
-    t.add :guid
-    t.add :author
-    t.add :created_at
-  end
-
 end
