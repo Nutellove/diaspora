@@ -18,8 +18,11 @@ module Webocracy
       klass.extend ClassMethods
     end
 
-    def count
-      decisions.length
+    def count(filter={})
+      tmp = decisions
+      if filter[:author]; tmp = tmp.find_all{|d| d.author == filter[:author]} end
+      if filter[:value];  tmp = tmp.find_all{|d| d.value  == filter[:value]}  end
+      tmp.length
     end
 
     def get_sum

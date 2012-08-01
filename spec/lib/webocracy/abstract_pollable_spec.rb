@@ -31,14 +31,12 @@ module Webocracy
           @d1 = new_decision 1, bob.person
           @d2 = new_decision 0, bob.person
         end
-
         it 'can only have one Decision per Citizen' do
           @generic_pollable << @d1
           @generic_pollable.count.should == 1
           @generic_pollable << @d2
           @generic_pollable.count.should == 1
         end
-
         it 'updates the old decision value' do # may replace the decision altogether later on (for timestamps, etc)
           @generic_pollable << @d1
           @generic_pollable.get_sum.should == 1
@@ -61,6 +59,40 @@ module Webocracy
       it 'returns false if not found' do
         @generic_pollable << @decision
         @generic_pollable.get_decision_from(alice.person).should be_false
+      end
+    end
+
+
+    describe '#count' do
+      before do
+        @d1 = new_decision 1, alice.person
+        @d2 = new_decision 1, bob.person
+        @d3 = new_decision 0, eve.person
+      end
+      it 'returns the number of decisions' do
+        @generic_pollable.count.should == 0
+        @generic_pollable << @d1
+        @generic_pollable.count.should == 1
+        @generic_pollable << @d2
+        @generic_pollable.count.should == 2
+      end
+      describe 'filtering' do
+        before do
+          @generic_pollable << @d1
+          @generic_pollable << @d2
+          @generic_pollable << @d3
+        end
+        it 'filters by author correctly' do
+          @generic_pollable.count(:author => alice.person).should == 1
+          @generic_pollable.count(:author => bob.person).should == 1
+          @generic_pollable.count(:author => eve.person).should == 1
+          @generic_pollable.count(:author => FactoryGirl.build(:person)).should == 0
+        end
+        it 'filters by value correctly' do
+          @generic_pollable.count(:value => 1).should == 2
+          @generic_pollable.count(:value => 0).should == 1
+          @generic_pollable.count(:value => -1).should == 0
+        end
       end
     end
 
