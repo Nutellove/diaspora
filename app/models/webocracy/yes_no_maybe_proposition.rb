@@ -4,7 +4,7 @@
 
 # Basically, a Post that is YesNoMaybePollable
 
-class Proposition < Post
+class Webocracy::YesNoMaybeProposition < Webocracy::AbstractProposition
 
   include Webocracy::YesNoMaybePollable
 

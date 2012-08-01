@@ -4,7 +4,7 @@
 
 # A Decision is explicitly made by a Citizen on a Pollable entity
 # It holds an integer value or nil
-class Decision < Federated::Relayable
+class Webocracy::Decision < Federated::Relayable
   class Generator < Federated::Generator
     def self.federated_class
       Decision
