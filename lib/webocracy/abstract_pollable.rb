@@ -49,7 +49,7 @@ module Webocracy
             raise InvalidDecision, "Not valid value '#{decision.value}'"
           end
         else
-          raise InvalidDecision, "Unknown decision type '#{decision.class.base_class.to_s}'"
+          raise InvalidDecision, "Unknown decision type '#{decision.class}'"
           #raise "Unknown decision type '#{decision.class.base_class.to_s}'"
       end
     end
@@ -72,6 +72,7 @@ module Webocracy
 
     module ClassMethods
       def make_pollable(model)
+        # The model needs to extend ActiveRecord
         model.instance_eval do
           has_many :decisions, :class_name => 'Decision',  :dependent => :delete_all, :as => :target
         end

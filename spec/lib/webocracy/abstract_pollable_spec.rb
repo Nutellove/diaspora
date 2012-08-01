@@ -75,15 +75,11 @@ module Webocracy
         @generic_pollable.get_sum.should == 1
       end
       it 'holds the sum of the values of the decisions' do
-        [1, 2, 3].each do |v|
-          @generic_pollable << new_decision(v)
-        end
+        [1, 2, 3].each { |v| @generic_pollable << new_decision(v) }
         @generic_pollable.get_sum.should == 6
       end
       it 'works with negative decision values' do
-        [1, 1, -3].each do |v|
-          @generic_pollable << new_decision(v)
-        end
+        [1, 1, -3].each { |v| @generic_pollable << new_decision(v) }
         @generic_pollable.get_sum.should == -1
       end
     end
@@ -98,15 +94,11 @@ module Webocracy
         @generic_pollable.get_mean.should == 42
       end
       it 'holds the mean value of the values of the decisions' do
-        [1, 2, 3].each do |v|
-          @generic_pollable << new_decision(v)
-        end
+        [1, 2, 3].each { |v| @generic_pollable << new_decision(v) }
         @generic_pollable.get_mean.should == 2
       end
       it 'works with negative decision values' do
-        [-5, -25, -30].each do |v|
-          @generic_pollable << new_decision(v)
-        end
+        [-5, -25, -30].each { |v| @generic_pollable << new_decision(v) }
         @generic_pollable.get_mean.should == -20
       end
     end

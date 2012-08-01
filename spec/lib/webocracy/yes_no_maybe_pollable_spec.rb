@@ -13,12 +13,8 @@ module Webocracy
 
     describe '#is_valid' do
       it 'should accept Decisions with values in {-1,0,1}' do
-        d1 = new_decision -1
-        d2 = new_decision 0
-        d3 = new_decision 1
-        @ynm_pollable << d1
-        @ynm_pollable << d2
-        @ynm_pollable << d3
+        [-1, 0, 1].each { |v| @ynm_pollable << new_decision(v) }
+        @ynm_pollable.count.should == 3
       end
       it 'should not accept Decisions with values outside {-1,0,1}' do
         assert_raise InvalidDecision do
