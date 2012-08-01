@@ -8,24 +8,25 @@ module Webocracy
   describe YesNoMaybePollable do
     before do
       @ynm_pollable = FactoryGirl.build(:webocracy_yes_no_maybe_proposition, :author => alice.person)
+      extend HelperMethods
     end
 
     describe '#is_valid' do
       it 'should accept Decisions with values in {-1,0,1}' do
-        d1 = FactoryGirl.build(:webocracy_decision, :value => -1)
-        d2 = FactoryGirl.build(:webocracy_decision, :value => 0)
-        d3 = FactoryGirl.build(:webocracy_decision, :value => 1)
+        d1 = new_decision -1
+        d2 = new_decision 0
+        d3 = new_decision 1
         @ynm_pollable << d1
         @ynm_pollable << d2
         @ynm_pollable << d3
       end
       it 'should not accept Decisions with values outside {-1,0,1}' do
         assert_raise InvalidDecision do
-          d1 = FactoryGirl.build(:webocracy_decision, :value => 2)
+          d1 = new_decision 2
           @ynm_pollable << d1
         end
         assert_raise InvalidDecision do
-          d1 = FactoryGirl.build(:webocracy_decision, :value => -2)
+          d1 = new_decision -2
           @ynm_pollable << d1
         end
       end

@@ -6,50 +6,60 @@
 require 'spec_helper'
 
 module Webocracy
+
   describe AbstractPollable do
     before do
-
       # GenericProposition is GenericPollable
       @generic_pollable = FactoryGirl.build(:webocracy_generic_proposition, :author => alice.person)
 
-
+      extend HelperMethods
     end
 
-    describe '<< (adding decisions)' do
-      it 'must work' do
-        d = FactoryGirl.build(:webocracy_decision, :value => 1)
-        @generic_pollable << d
-        @generic_pollable.count.should == 1
+
+    describe '#<< (adding a decision)' do
+
+      describe 'General' do
+        it 'must work' do
+          d = new_decision 1
+          @generic_pollable << d
+          @generic_pollable.count.should == 1
+        end
       end
 
-      it 'can only have one Decision per Citizen' do
-        d1 = FactoryGirl.build(:webocracy_decision, {:value => 1, :author => bob.person})
-        d2 = FactoryGirl.build(:webocracy_decision, {:value => 0, :author => bob.person})
-        @generic_pollable << d1
-        @generic_pollable << d2
-        @generic_pollable.count.should == 1
+      describe 'Same author' do
+        before do
+          @d1 = new_decision 1, bob.person
+          @d2 = new_decision 0, bob.person
+        end
+
+        it 'can only have one Decision per Citizen' do
+          @generic_pollable << @d1
+          @generic_pollable.count.should == 1
+          @generic_pollable << @d2
+          @generic_pollable.count.should == 1
+        end
+
+        it 'updates the old decision value' do # may replace the decision altogether later on (for timestamps, etc)
+          @generic_pollable << @d1
+          @generic_pollable.get_sum.should == 1
+          @generic_pollable << @d2
+          @generic_pollable.get_sum.should == 0
+        end
       end
 
-      it 'updates the old decision value' do
-        d1 = FactoryGirl.build(:webocracy_decision, {:value => 1, :author => bob.person})
-        d2 = FactoryGirl.build(:webocracy_decision, {:value => 0, :author => bob.person})
-        @generic_pollable << d1
-        @generic_pollable.get_sum.should == 1
-        @generic_pollable << d2
-        @generic_pollable.get_sum.should == 0
-      end
     end
 
 
     describe '#get_decision_from' do
+      before do
+        @decision = new_decision 1
+      end
       it 'must work' do
-        d = FactoryGirl.build(:webocracy_decision, :value => 1)
-        @generic_pollable << d
-        @generic_pollable.get_decision_from(d.author).should == d
+        @generic_pollable << @decision
+        @generic_pollable.get_decision_from(@decision.author).should == @decision
       end
       it 'returns false if not found' do
-        d = FactoryGirl.build(:webocracy_decision, :value => 1)
-        @generic_pollable << d
+        @generic_pollable << @decision
         @generic_pollable.get_decision_from(alice.person).should be_false
       end
     end
@@ -60,26 +70,20 @@ module Webocracy
         @generic_pollable.get_sum.should == 0
       end
       it 'has the value of the decision if there is only one' do
-        d = FactoryGirl.build(:webocracy_decision, :value => 1)
+        d = new_decision 1
         @generic_pollable << d
         @generic_pollable.get_sum.should == 1
       end
       it 'holds the sum of the values of the decisions' do
-        d1 = FactoryGirl.build(:webocracy_decision, :value => 1)
-        d2 = FactoryGirl.build(:webocracy_decision, :value => 2)
-        d3 = FactoryGirl.build(:webocracy_decision, :value => 3)
-        @generic_pollable << d1
-        @generic_pollable << d2
-        @generic_pollable << d3
+        [1, 2, 3].each do |v|
+          @generic_pollable << new_decision(v)
+        end
         @generic_pollable.get_sum.should == 6
       end
       it 'works with negative decision values' do
-        d1 = FactoryGirl.build(:webocracy_decision, :value => 1)
-        d2 = FactoryGirl.build(:webocracy_decision, :value => 1)
-        d3 = FactoryGirl.build(:webocracy_decision, :value => -3)
-        @generic_pollable << d1
-        @generic_pollable << d2
-        @generic_pollable << d3
+        [1, 1, -3].each do |v|
+          @generic_pollable << new_decision(v)
+        end
         @generic_pollable.get_sum.should == -1
       end
     end
@@ -89,26 +93,20 @@ module Webocracy
         @generic_pollable.get_mean.should == 0
       end
       it 'has the value of the decision if there is only one' do
-        d = FactoryGirl.build(:webocracy_decision, :value => 42)
+        d = new_decision 42
         @generic_pollable << d
         @generic_pollable.get_mean.should == 42
       end
       it 'holds the mean value of the values of the decisions' do
-        d1 = FactoryGirl.build(:webocracy_decision, :value => 1)
-        d2 = FactoryGirl.build(:webocracy_decision, :value => 2)
-        d3 = FactoryGirl.build(:webocracy_decision, :value => 3)
-        @generic_pollable << d1
-        @generic_pollable << d2
-        @generic_pollable << d3
+        [1, 2, 3].each do |v|
+          @generic_pollable << new_decision(v)
+        end
         @generic_pollable.get_mean.should == 2
       end
       it 'works with negative decision values' do
-        d1 = FactoryGirl.build(:webocracy_decision, :value => -5)
-        d2 = FactoryGirl.build(:webocracy_decision, :value => -25)
-        d3 = FactoryGirl.build(:webocracy_decision, :value => -30)
-        @generic_pollable << d1
-        @generic_pollable << d2
-        @generic_pollable << d3
+        [-5, -25, -30].each do |v|
+          @generic_pollable << new_decision(v)
+        end
         @generic_pollable.get_mean.should == -20
       end
     end

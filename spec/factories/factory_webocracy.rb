@@ -24,7 +24,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :webocracy_decision, :class => Webocracy::Decision do
+  factory :webocracy_decision_without_target, :class => Webocracy::Decision do
     association :author, :factory => :person
     #association :target, :factory => :proposition
   end
