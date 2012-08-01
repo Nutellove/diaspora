@@ -15,6 +15,18 @@ module Webocracy
       extend HelperMethods
     end
 
+    describe 'opening & closing' do
+
+      it 'should be open at first' do
+        @generic_pollable.closed.should == false
+      end
+
+      it 'should be closed if we close it' do
+        @generic_pollable.closed = true
+        @generic_pollable.closed.should == true
+      end
+
+    end
 
     describe '#<< (adding a decision)' do
 

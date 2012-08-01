@@ -6,7 +6,7 @@ class Webocracy::InvalidDecision < StandardError; end
 
 # A Pollable entity will receive Decisions from Citizens.
 # It also may :
-# - be open or closed (todo)
+# - be open or closed
 # - stay opened for a limited time (todo)
 # - stay opened for a limited number of decisions (todo)
 # - get syndicated data on the decisions (eg: final decision) (todo)
@@ -25,8 +25,6 @@ module Webocracy
       tmp.length
     end
 
-
-
     def get_sum
       sum = 0
       return sum unless !decisions.empty?
@@ -44,6 +42,7 @@ module Webocracy
       case decision
         when Decision
           if is_valid decision
+            # replace old decision value with new one
             old_decision = get_decision_from decision.author
             if old_decision
               old_decision.value = decision.value
@@ -76,10 +75,18 @@ module Webocracy
     end
 
     module ClassMethods
+      module ModelInstanceMethods
+        #@closed = false # not working, not sure why
+        def closed; true == @closed end
+        def closed= status; @closed = status end
+      end
       def make_pollable(model)
         # The model needs to extend ActiveRecord
         model.instance_eval do
           has_many :decisions, :class_name => 'Decision',  :dependent => :delete_all, :as => :target
+
+          #attr_accessible :closed # not sure why this does no work... eval is evil
+          include ModelInstanceMethods # using this hack instead
         end
       end
     end
