@@ -29,6 +29,15 @@ module Webocracy
         @generic_pollable << d2
         @generic_pollable.count.should == 1
       end
+
+      it 'updates the old decision value' do
+        d1 = FactoryGirl.build(:webocracy_decision, {:value => 1, :author => bob.person})
+        d2 = FactoryGirl.build(:webocracy_decision, {:value => 0, :author => bob.person})
+        @generic_pollable << d1
+        @generic_pollable.get_sum.should == 1
+        @generic_pollable << d2
+        @generic_pollable.get_sum.should == 0
+      end
     end
 
 

@@ -39,10 +39,9 @@ module Webocracy
       case decision
         when Decision
           if is_valid decision
-            if get_decision_from decision.author
-              # do nothing
-              puts '========='
-              puts decision.author
+            old_decision = get_decision_from decision.author
+            if old_decision
+              old_decision.value = decision.value
             else
               self.decisions << decision
             end
