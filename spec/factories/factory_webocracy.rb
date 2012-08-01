@@ -24,10 +24,10 @@ FactoryGirl.define do
     end
   end
 
-  #factory :decision do
-  #  association :author, :factory => :person
-  #  association :target, :factory => :proposition
-  #end
+  factory :webocracy_decision, :class => Webocracy::Decision do
+    association :author, :factory => :person
+    #association :target, :factory => :proposition
+  end
 
 
 end

@@ -39,7 +39,13 @@ module Webocracy
       case decision
         when Decision
           if is_valid decision
-            self.decisions << decision
+            if get_decision_from decision.author
+              # do nothing
+              puts '========='
+              puts decision.author
+            else
+              self.decisions << decision
+            end
           else
             raise InvalidDecision, "Not valid value '#{decision.value}'"
           end
@@ -53,6 +59,16 @@ module Webocracy
     # @return bool
     def is_valid(decision)
       raise InvalidDecision, "is_valid must be overridden"
+    end
+
+    def get_decision_from(author)
+      r = false
+      decisions.each do |decision|
+        if author == decision.author
+          r = decision
+        end
+      end
+      r
     end
 
     module ClassMethods
