@@ -204,31 +204,6 @@ FactoryGirl.define do
     association(:post, :factory => :status_message)
   end
 
-
-  ## Webocracy stuff ##
-
-  factory :webocracy_generic_proposition, :class => Webocracy::GenericProposition do
-    sequence(:text) { |n| "Generic Propal #{n}" }
-    association :author, :factory => :person
-    after_build do |prop|
-      prop.diaspora_handle = prop.author.diaspora_handle
-    end
-  end
-
-  #factory :yes_no_maybe_proposition do
-  #  sequence(:text) { |n| "YNM Propal #{n}" }
-  #  association :author, :factory => :person
-  #  after_build do |prop|
-  #    prop.diaspora_handle = prop.author.diaspora_handle
-  #  end
-  #end
-
-  #factory :decision do
-  #  association :author, :factory => :person
-  #  association :target, :factory => :proposition
-  #end
-
-
   #templates
   factory(:status_with_photo_backdrop, :parent => :status_message_with_photo)
 
