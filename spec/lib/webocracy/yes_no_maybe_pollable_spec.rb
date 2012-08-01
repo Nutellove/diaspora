@@ -37,7 +37,7 @@ module Webocracy
         [1].each { |v| @ynm_pollable << new_decision(v) }
         @ynm_pollable.get_winner.should == 1
       end
-      it 'should return a value in {-1,0,1}' do
+      it 'should return the most chosen value in {-1,0,1}' do
         [1,1,0,-1].each { |v| @ynm_pollable << new_decision(v) }
         @ynm_pollable.get_winner.should == 1
       end

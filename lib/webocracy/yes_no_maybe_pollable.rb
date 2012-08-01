@@ -18,5 +18,13 @@ module Webocracy
     def is_valid(decision)
       [-1,0,1].include? decision.value
     end
+
+    def get_winner
+      mean = get_mean
+      if    0 > mean; -1
+      elsif 0 < mean; 1
+      else; 0 end
+    end
+
   end
 end

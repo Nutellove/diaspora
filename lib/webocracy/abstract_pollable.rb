@@ -25,6 +25,8 @@ module Webocracy
       tmp.length
     end
 
+
+
     def get_sum
       sum = 0
       return sum unless !decisions.empty?
@@ -35,7 +37,7 @@ module Webocracy
     end
 
     def get_mean
-      count > 0 ? get_sum / count : get_sum
+      count > 0 ? get_sum.quo(count) : 0
     end
 
     def << (decision)
