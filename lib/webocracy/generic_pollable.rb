@@ -14,5 +14,9 @@ module Webocracy
     def is_valid(decision)
       true # model makes sure value is already an integer
     end
+
+    def before_add_decision(decision)
+      true # yay, add as much as you want
+    end
   end
 end

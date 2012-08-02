@@ -42,12 +42,8 @@ module Webocracy
       case decision
         when Decision
           if is_valid decision
-            # replace old decision value with new one
-            old_decision = get_decision_from decision.author
-            if old_decision
-              old_decision.value = decision.value
-            else
-              self.decisions << decision
+            if before_add_decision decision
+              decisions << decision
             end
           else
             raise InvalidDecision, "Not valid value '#{decision.value}'"
@@ -56,6 +52,11 @@ module Webocracy
           raise InvalidDecision, "Unknown decision type '#{decision.class}'"
           #raise "Unknown decision type '#{decision.class.base_class.to_s}'"
       end
+    end
+
+    # Returns advice (true/false) on if the decision may be added
+    def before_add_decision(decision)
+      true # todo: look @ Aquarium and AOP
     end
 
     # Is the passed decision a valid one ?

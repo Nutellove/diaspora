@@ -41,17 +41,11 @@ module Webocracy
           @d1 = new_decision 1, bob.person
           @d2 = new_decision 0, bob.person
         end
-        it 'can only have one Decision per Citizen' do
+        it 'can have multiple Decisions' do
           @generic_pollable << @d1
           @generic_pollable.count.should == 1
           @generic_pollable << @d2
-          @generic_pollable.count.should == 1
-        end
-        it 'updates the old decision value' do # may replace the decision altogether later on (for timestamps, etc)
-          @generic_pollable << @d1
-          @generic_pollable.get_sum.should == 1
-          @generic_pollable << @d2
-          @generic_pollable.get_sum.should == 0
+          @generic_pollable.count.should == 2
         end
       end
 

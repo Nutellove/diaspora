@@ -47,5 +47,36 @@ module Webocracy
       end
     end
 
+    describe '#<< (adding a decision)' do
+
+      describe 'General' do
+        it 'must work' do
+          d = new_decision 1
+          @ynm_pollable << d
+          @ynm_pollable.count.should == 1
+        end
+      end
+
+      describe 'Same author' do
+        before do
+          @d1 = new_decision 1, bob.person
+          @d2 = new_decision 0, bob.person
+        end
+        it 'can only have one Decision per Citizen' do
+          @ynm_pollable << @d1
+          @ynm_pollable.count.should == 1
+          @ynm_pollable << @d2
+          @ynm_pollable.count.should == 1
+        end
+        it 'updates the old decision value' do # may replace the decision altogether later on (for timestamps, etc)
+          @ynm_pollable << @d1
+          @ynm_pollable.get_sum.should == 1
+          @ynm_pollable << @d2
+          @ynm_pollable.get_sum.should == 0
+        end
+      end
+
+    end
+
   end
 end
