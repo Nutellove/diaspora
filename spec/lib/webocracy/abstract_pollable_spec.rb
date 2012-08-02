@@ -26,7 +26,7 @@ module Webocracy
       end
     end
 
-    describe '#<< (adding a decision)' do
+    describe 'Adding Decisions' do
 
       describe 'General' do
         it 'must work' do
@@ -46,6 +46,34 @@ module Webocracy
           @generic_pollable.count.should == 1
           @generic_pollable << @d2
           @generic_pollable.count.should == 2
+        end
+      end
+
+    end
+
+    describe 'Revoking decisions' do
+      before do
+        @d1 = new_decision 1, bob.person
+        @d2 = new_decision 0, bob.person
+        @d3 = new_decision 0, bob.person
+        @generic_pollable << @d1
+        @generic_pollable << @d2
+      end
+      it 'works on all Decisions of a Citizen' do
+        @generic_pollable.revoke_all_decisions_of bob.person
+        @generic_pollable.count.should == 0
+      end
+      it 'works on a specific Decision' do
+        @generic_pollable.revoke_decision @d2
+        @generic_pollable.count.should == 1
+        @generic_pollable.get_sum.should == 1 # result of d1
+      end
+      it 'does not accept Decisions from other Pollables ' do
+        assert_raise InvalidDecision do
+          @generic_pollable.revoke_decision @d3
+        end
+        assert_raise InvalidDecision do
+          @generic_pollable.revoke_decision nil
         end
       end
 
