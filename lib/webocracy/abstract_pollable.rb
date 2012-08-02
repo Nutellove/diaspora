@@ -14,9 +14,9 @@ class Webocracy::InvalidDecision < StandardError; end
 module Webocracy
   module AbstractPollable
 
-    def self.included(klass)
-      klass.extend ClassMethods
-    end
+    def get_winner; get_mean end
+
+    def get_mean; count > 0 ? get_sum.quo(count) : 0 end
 
     def count(filter={})
       tmp = decisions
@@ -32,10 +32,6 @@ module Webocracy
         sum += decision.value
       end
       sum
-    end
-
-    def get_mean
-      count > 0 ? get_sum.quo(count) : 0
     end
 
     def << (decision)
@@ -87,6 +83,12 @@ module Webocracy
       r
     end
 
+    ## ON INCLUSION
+
+    def self.included(klass)
+      klass.extend ClassMethods
+    end
+
     module ClassMethods
       module ModelInstanceMethods
         #@closed = false # not working, not sure why
@@ -98,7 +100,7 @@ module Webocracy
         model.instance_eval do
           has_many :decisions, :class_name => 'Decision',  :dependent => :delete_all, :as => :target
 
-          #attr_accessible :closed # not sure why this does no work... eval is evil
+          #attr_accessible :closed # not sure why this does no work... eval is evil?
           include ModelInstanceMethods # using this hack instead
         end
       end
