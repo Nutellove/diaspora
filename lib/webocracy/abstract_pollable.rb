@@ -56,7 +56,7 @@ module Webocracy
 
     # Returns advice (true/false) on if the decision may be added
     def before_add_decision(decision)
-      true # todo: look @ Aquarium and AOP
+      true # todo: look @ Aquarium and AOP, as this is advice given by a Behavior-able
     end
 
     # Is the passed decision a valid one ?

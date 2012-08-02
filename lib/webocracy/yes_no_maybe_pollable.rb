@@ -13,9 +13,6 @@ module Webocracy
       make_pollable model
     end
 
-
-
-
     def get_winner
       mean = get_mean
       if    0 > mean; -1
@@ -30,10 +27,9 @@ module Webocracy
 
     # Don't allow for multiple decisions
     def before_add_decision(decision)
-      # replace old decision value with new one
       old_decision = get_last_decision_of decision.author
       if old_decision # we already have a Decision from this author on this pollable
-        old_decision.value = decision.value
+        old_decision.value = decision.value # replace old decision value with new one
         false # don't add new
       else
         true

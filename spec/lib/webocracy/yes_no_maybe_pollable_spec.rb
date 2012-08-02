@@ -47,7 +47,7 @@ module Webocracy
       end
     end
 
-    describe '#<< (adding a decision)' do
+    describe 'Adding a Decision' do
 
       describe 'General' do
         it 'must work' do
