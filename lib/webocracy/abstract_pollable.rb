@@ -65,7 +65,19 @@ module Webocracy
       raise InvalidDecision, "is_valid must be overridden"
     end
 
-    def get_decision_from(author)
+    def revoke_decision(decision)
+      if decisions.include? decision
+        decisions.delete decision
+      else
+        raise InvalidDecision, "Cannot revoke a foreign decision"
+      end
+    end
+
+    def revoke_all_decisions_of(author)
+      decisions.delete_if { |decision| author == decision.author }
+    end
+
+    def get_last_decision_of(author)
       r = false
       decisions.each do |decision|
         if author == decision.author

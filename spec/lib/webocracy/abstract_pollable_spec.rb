@@ -80,17 +80,17 @@ module Webocracy
     end
 
 
-    describe '#get_decision_from' do
+    describe '#get_last_decision_of' do
       before do
         @decision = new_decision 1
       end
       it 'must work' do
         @generic_pollable << @decision
-        @generic_pollable.get_decision_from(@decision.author).should == @decision
+        @generic_pollable.get_last_decision_of(@decision.author).should == @decision
       end
       it 'returns false if not found' do
         @generic_pollable << @decision
-        @generic_pollable.get_decision_from(alice.person).should be_false
+        @generic_pollable.get_last_decision_of(alice.person).should be_false
       end
     end
 
