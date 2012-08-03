@@ -10,14 +10,14 @@ module Webocracy
   describe 'Delegation' do
     before do
       extend HelperMethods
-
       # create aspect 'Politics'
-      @politics = alice.aspects.create(:name => 'Politics') # I18n.t('aspects.seed.politics')
+      #@politics = alice.aspects.create(:name => 'Politics') # I18n.t('aspects.seed.politics')
       #@politics = FactoryGirl.build(:aspect, { :name => 'Politics', :user => alice })
       #alice.add_contact_to_aspect(alice.contact_for(bob.person), @politics)
+    end
 
-      @proposition = FactoryGirl.build(:webocracy_yes_no_maybe_proposition, :author => eve.person)
-
+    it 'has a valid factory' do
+      FactoryGirl.build(:webocracy_delegation).should be_valid
     end
 
     describe 'Basic Operations' do
@@ -27,8 +27,13 @@ module Webocracy
         it "should not find eve in alice's delegates" do
           alice.delegates.include?(eve.person).should be_false
         end
-        it "should find eve in alice's delegates after we add a Delegation" do
-          delegation = alice.delegations.create(:person => eve.person)
+        it "should find eve in alice's delegates after we create a Delegation" do
+          alice.delegations.create(:person => eve.person)
+          alice.delegates.include?(eve.person).should be_true
+        end
+        it "should find eve in alice's delegates after we build a Delegation" do
+          d = FactoryGirl.build(:webocracy_delegation, { :user => alice, :person => eve.person })
+          alice.delegations << d
           alice.delegates.include?(eve.person).should be_true
         end
         it "should ignore foreign delegations" do
@@ -66,6 +71,27 @@ module Webocracy
           alice.delegates.delete eve.person
           alice.delegations.size.should == 0
           alice.delegates.size.should   == 0
+        end
+
+      end
+
+    end
+
+
+    describe 'Decision Propagation' do
+
+      before do
+        @proposition = FactoryGirl.build(:webocracy_yes_no_maybe_proposition, :author => eve.person)
+        alice.delegates << bob.person
+      end
+
+      describe 'Workflow' do
+
+        it 'propagates decisions to comrades' do
+          pending "Thinking..."
+          d = new_decision 1, bob.person
+          @proposition << d
+
         end
 
       end
