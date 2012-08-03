@@ -25,8 +25,7 @@ module Webocracy
         alice.delegates.include?(eve.person).should be_false
       end
       it "should find eve in alice's delegates after we add a Delegation" do
-        d = FactoryGirl.build(:webocracy_delegation, { :user => alice, :person => eve.person })
-        alice.delegations << d
+        delegation = alice.delegations.create(:person => eve.person)
         alice.delegates.include?(eve.person).should be_true
       end
       it "should ignore foreign delegations" do
@@ -37,6 +36,11 @@ module Webocracy
       it "should find eve in alice's delegates after we add a Person" do
         alice.delegates << eve.person
         alice.delegates.include?(eve.person).should be_true
+        alice.delegations.find_all{ |d| d.person == eve.person }.length.should == 1
+      end
+      it 'does not allow you to target yourself' do
+        delegation = alice.delegations.create(:person => alice.person)
+        delegation.should have(1).error_on(:person_id)
       end
     end
 
