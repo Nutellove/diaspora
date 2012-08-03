@@ -9,7 +9,7 @@ module Webocracy
     def self.included(model)
       model.class_eval do
 
-        has_many :delegations, :class_name => 'Webocracy::Delegation'
+        has_many :delegations, :class_name => Webocracy::Delegation, :extend => Webocracy::DelegationExtension
         has_many :delegates, :through => :delegations, :source => :person
 
       end

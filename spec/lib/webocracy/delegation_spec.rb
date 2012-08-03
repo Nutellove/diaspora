@@ -29,6 +29,11 @@ module Webocracy
         alice.delegations << d
         alice.delegates.include?(eve.person).should be_true
       end
+      it "should ignore foreign delegations" do
+        d = FactoryGirl.build(:webocracy_delegation, { :user => bob, :person => eve.person })
+        alice.delegations << d
+        alice.delegates.include?(eve.person).should be_false
+      end
       it "should find eve in alice's delegates after we add a Person" do
         alice.delegates << eve.person
         alice.delegates.include?(eve.person).should be_true
