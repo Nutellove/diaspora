@@ -29,4 +29,9 @@ FactoryGirl.define do
     #association :target, :factory => :proposition
   end
 
+  factory :webocracy_delegation, :class => Webocracy::Delegation do
+    association :user,   :factory => :user
+    association :person, :factory => :person
+  end
+
 end

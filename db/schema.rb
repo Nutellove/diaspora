@@ -124,6 +124,11 @@ ActiveRecord::Schema.define(:version => 20120731032247) do
   add_index "decisions", ["guid"], :name => "index_decisions_on_guid", :unique => true
   add_index "decisions", ["target_id"], :name => "index_decisions_on_target_id"
 
+  create_table "delegations", :force => true do |t|
+    t.integer "user_id"
+    t.integer "person_id"
+  end
+
   create_table "invitation_codes", :force => true do |t|
     t.string   "token"
     t.integer  "user_id"
