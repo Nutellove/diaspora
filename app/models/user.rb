@@ -6,6 +6,7 @@ require Rails.root.join('lib', 'salmon', 'salmon')
 require Rails.root.join('lib', 'postzord', 'dispatcher')
 
 class User < ActiveRecord::Base
+  include Webocracy::Citizenable
   include Encryptor::Private
   include Connecting
   include Querying

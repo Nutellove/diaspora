@@ -10,11 +10,10 @@ module Webocracy
   describe 'Delegation (fixme)' do
     before do
 
-      # create aspect 'Politics'
-      @politics = FactoryGirl.build(:aspect, { :name => 'Politics', :user => alice })
+      #@politics = FactoryGirl.build(:aspect, { :name => 'Politics', :user => alice })
 
-      #alice.aspects.create(:name => I18n.t('aspects.seed.politics'))
-      @politics = alice.aspects.create(:name => 'Politics')
+      # create aspect 'Politics'
+      @politics = alice.aspects.create(:name => 'Politics') # I18n.t('aspects.seed.politics')
       alice.add_contact_to_aspect(alice.contact_for(bob.person), @politics)
 
       @proposition = FactoryGirl.build(:webocracy_yes_no_maybe_proposition, :author => eve.person)
@@ -23,8 +22,11 @@ module Webocracy
     end
 
     describe 'Aspects' do
-      it 'should find bob as alice\'s delegate' do
-        # fixme
+      it "should find bob in alice's delegates" do
+        alice.delegates.include?(bob.person).should be_true
+      end
+      it "should not find eve in alice's delegates" do
+        alice.delegates.include?(eve.person).should be_false
       end
     end
 
