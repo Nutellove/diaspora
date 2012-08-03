@@ -7,15 +7,22 @@ module Webocracy
   module Citizenable
 
     def delegates
-      a = []
+      def << (person)
+        raise "TEST"
+      end
+      return @delegates unless @delegates.blank?
+      political_aspect.contacts.collect do |contact|
+        contact.person
+      end
+    end
+
+    def political_aspect
       aspects.each do |aspect|
         if 'Politics' == aspect.name
-          aspect.contacts.each do |contact|
-            a << contact.person
-          end
+          return aspect
         end
       end
-      a
+      raise "No 'Politics' aspect found."
     end
 
   end

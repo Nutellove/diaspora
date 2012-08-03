@@ -9,6 +9,7 @@ module Webocracy
 
   describe 'Delegation (fixme)' do
     before do
+      extend HelperMethods
 
       #@politics = FactoryGirl.build(:aspect, { :name => 'Politics', :user => alice })
 
@@ -18,7 +19,6 @@ module Webocracy
 
       @proposition = FactoryGirl.build(:webocracy_yes_no_maybe_proposition, :author => eve.person)
 
-      extend HelperMethods
     end
 
     describe 'Aspects' do
@@ -27,6 +27,11 @@ module Webocracy
       end
       it "should not find eve in alice's delegates" do
         alice.delegates.include?(eve.person).should be_false
+      end
+      it "should find eve in alice's delegates after we add her" do
+        pending "thinking about user aspects, maybe we need system aspects"
+        alice.delegates << eve.person
+        alice.delegates.include?(eve.person).should be_true
       end
     end
 
