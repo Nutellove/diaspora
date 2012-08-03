@@ -35,6 +35,17 @@ module Webocracy
       end
     end
 
+    describe 'Delegation' do
+
+      it 'test' do
+
+        d = FactoryGirl.build(:webocracy_delegation, { :user => alice, :person => eve.person })
+        alice.delegations << d
+
+      end
+
+    end
+
 
   end
 end
