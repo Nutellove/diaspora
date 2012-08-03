@@ -3,10 +3,12 @@
 #   the COPYRIGHT file.
 
 class Contact < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :user # the owner
+  belongs_to :person # the target
 
-  belongs_to :person
-  validates :person, :presence => true
+  validates_presence_of :user
+  validates_presence_of :person
+  validates_uniqueness_of :person_id, :scope => :user_id
 
   has_many :aspect_memberships
   has_many :aspects, :through => :aspect_memberships
@@ -18,31 +20,22 @@ class Contact < ActiveRecord::Base
            :not_blocked_user,
            :not_contact_with_closed_account
 
-  validates_presence_of :user
-  validates_uniqueness_of :person_id, :scope => :user_id
 
   before_destroy :destroy_notifications
 
-  scope :all_contacts_of_person, lambda {|x| where(:person_id => x.id)}
 
-    # contact.sharing is true when contact.person is sharing with contact.user
-  scope :sharing, lambda {
-    where(:sharing => true)
-  }
+  # contact.sharing is true when contact.person is sharing with contact.user
+  scope :sharing, lambda { where(:sharing => true) }
 
   # contact.receiving is true when contact.user is sharing with contact.person
-  scope :receiving, lambda {
-    where(:receiving => true)
-  }
+  scope :receiving, lambda { where(:receiving => true) }
 
-  scope :for_a_stream, lambda {
-    includes(:aspects, :person => :profile).
-        order('profiles.last_name ASC')
-  }
+  scope :all_contacts_of_person, lambda {|x| where(:person_id => x.id)}
 
-  scope :only_sharing, lambda {
-    sharing.where(:receiving => false)
-  }
+  scope :for_a_stream, lambda { includes(:aspects, :person => :profile).order('profiles.last_name ASC') }
+
+  scope :only_sharing, lambda { sharing.where(:receiving => false) }
+
 
   def destroy_notifications
     Notification.where(:target_type => "Person",
@@ -92,7 +85,9 @@ class Contact < ActiveRecord::Base
     end
   end
 
+
   private
+
   def not_contact_with_closed_account
     if person_id && person.closed_account?
       errors[:base] << 'Cannot be in contact with a closed account'
