@@ -51,6 +51,20 @@ module Webocracy
           delegation.should have(1).error_on(:person_id)
         end
 
+        describe '#user.delegations.<<' do
+
+          it 'allows Users' do
+            alice.delegations << eve
+            alice.delegates.include?(eve.person).should be_true
+          end
+
+          it 'allows Persons' do
+            alice.delegations << eve.person
+            alice.delegates.include?(eve.person).should be_true
+          end
+
+        end
+
       end
 
       describe 'Revoking' do
@@ -88,10 +102,11 @@ module Webocracy
       describe 'Workflow' do
 
         it 'propagates decisions to comrades' do
-          pending "Thinking..."
+          #pending "Thinking..."
           d = new_decision 1, bob.person
           @proposition << d
-
+          puts d.inspect
+          puts @proposition.decisions.first.inspect
         end
 
       end
