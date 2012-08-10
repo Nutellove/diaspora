@@ -90,18 +90,16 @@ module Webocracy
     end
 
     module ClassMethods
-      module ModelInstanceMethods
-        #@closed = false # not working, not sure why
-        def closed; true == @closed end
-        def closed= status; @closed = status end
-      end
       def make_pollable(model)
         # The model needs to extend ActiveRecord
-        model.instance_eval do
+        model.class_eval do
           has_many :decisions, :class_name => 'Decision',  :dependent => :delete_all, :as => :target
 
-          #attr_accessible :closed # not sure why this does no work... eval is evil?
-          include ModelInstanceMethods # using this hack instead
+          attr_accessible :closed # WHAT THE FUUUUUU !?! Without this it's going bananas !
+
+          # We still need this !?
+          def closed; true == @closed end
+          def closed= status; @closed = status end
         end
       end
     end
