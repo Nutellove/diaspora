@@ -6,11 +6,12 @@ class Webocracy::InvalidDecision < StandardError; end
 
 # A Pollable entity will receive Decisions from Citizens.
 # It also may :
-# - be open or closed
+# - be closed
 # - stay opened for a limited time (todo)
 # - stay opened for a limited number of decisions (todo)
 # - get syndicated data on the decisions (eg: final decision) (todo)
 # - be a base for different types of polls (YesNoMaybePollable, SingleChoicePollable, MultipleChoicePollable, ValueInRangePollable) (todo)
+# A Pollable needs to extend ActiveRecord
 module Webocracy
   module AbstractPollable
 
@@ -91,15 +92,9 @@ module Webocracy
 
     module ClassMethods
       def make_pollable(model)
-        # The model needs to extend ActiveRecord
         model.class_eval do
           has_many :decisions, :class_name => 'Decision',  :dependent => :delete_all, :as => :target
-
-          attr_accessible :closed # WHAT THE FUUUUUU !?! Without this it's going bananas !
-
-          # We still need this !?
-          def closed; true == @closed end
-          def closed= status; @closed = status end
+          attr_accessible :closed # WHAT THE FUUUUUU !?! Without this it's going bananas ! (problem with :to)
         end
       end
     end

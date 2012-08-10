@@ -316,6 +316,7 @@ ActiveRecord::Schema.define(:version => 20120731032247) do
     t.datetime "interacted_at"
     t.string   "frame_name"
     t.boolean  "favorite",                            :default => false
+    t.boolean  "closed",                              :default => false
   end
 
   add_index "posts", ["author_id", "root_guid"], :name => "index_posts_on_author_id_and_root_guid", :unique => true
