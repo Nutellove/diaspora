@@ -16,8 +16,8 @@ module Webocracy
       before do
         @alices_aspect = alice.aspects.where(:name => "generic").first
         @bobs_aspect = bob.aspects.where(:name => "generic").first
-        @proposition = alice.post(:yes_no_maybe_proposition, :text => "Free the seeds", :to => @alices_aspect)
-        @proposition2 = bob.post(:yes_no_maybe_proposition, :text => "Drop Hadopi and back Kickstarter", :to => @bobs_aspect)
+        @proposition = alice.post(YesNoMaybeProposition, :text => "Free the seeds", :to => @alices_aspect)
+        @proposition2 = bob.post(YesNoMaybeProposition, :text => "Drop Hadopi and back Kickstarter", :to => @bobs_aspect)
         @decision = alice.decide!(@proposition, 1) # alice decides on her own prop
         @decision2 = bob.decide!(@proposition, 1)  # bob decides on alice's prop
       end
