@@ -49,6 +49,10 @@ module Webocracy
         it 'does not allow you to target yourself' do
           delegation = alice.delegations.create(:person => alice.person)
           delegation.should have(1).error_on(:person_id)
+          alice.delegations << delegation # another way
+          alice.delegates.include?(alice.person).should be_false
+          alice.delegates << alice # another way
+          alice.delegates.include?(alice.person).should be_false
         end
 
         describe '#user.delegations.<<' do

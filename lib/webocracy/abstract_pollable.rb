@@ -94,7 +94,7 @@ module Webocracy
       def make_pollable(model)
         model.class_eval do
           has_many :decisions, :class_name => 'Decision',  :dependent => :delete_all, :as => :target
-          attr_accessible :closed # WHAT THE FUUUUUU !?! Without this it's going bananas ! (problem with :to)
+          attr_accessible :closed # Without this, User#post helper is going bananas ! (problem with :to)
         end
       end
     end

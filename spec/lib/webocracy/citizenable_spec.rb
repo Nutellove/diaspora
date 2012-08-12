@@ -48,9 +48,10 @@ module Webocracy
       end
 
       context 'Propagation' do
+
         before do
           @alices_aspect = alice.aspects.where(:name => "generic").first
-          # todo : bob has alice as delegate
+          bob.delegates << alice # bob has alice as delegate
           @proposition = alice.post(YesNoMaybeProposition, :text => "Free the seeds", :to => @alices_aspect)
           @alices_decision = alice.decide!(@proposition, 1) # alice decides on her own prop
         end
@@ -83,7 +84,7 @@ module Webocracy
                 bob.receives_decision @alices_decision
                 @bobs_decision_after = bob.decision_for @proposition
               end
-              it 'does not care' do
+              it "does not update bob's decision" do
                 @bobs_decision_after.should == @bobs_decision
               end
             end
@@ -98,7 +99,7 @@ module Webocracy
                 bob.receives_decision @alices_decision
                 @bobs_decision_after = bob.decision_for @proposition
               end
-              it 'does not care' do
+              it "does not update bob's decision" do
                 @bobs_decision_after.should == @bobs_decision
               end
               #it notifies bob
