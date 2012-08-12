@@ -56,6 +56,10 @@ module Webocracy
           @alices_decision = alice.decide!(@proposition, 1) # alice decides on her own prop
         end
 
+        it "should have alice in bob's delegates" do
+          bob.delegates.should include alice.person
+        end
+
         context 'Bob has no Decision on this Pollable' do
 
           describe '#receives_decision' do
