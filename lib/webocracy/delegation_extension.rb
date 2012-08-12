@@ -1,3 +1,5 @@
+# Make sure we don't delegate to ourselves
+
 module Webocracy
   module DelegationExtension
 
@@ -10,7 +12,7 @@ module Webocracy
         when User
           proxy_association.owner.delegates << delegatable.person
         else
-          raise "Must pass a Delegation"
+          raise "Must pass a Delegation, a Person or a User"
       end
     end
 
