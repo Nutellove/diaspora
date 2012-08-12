@@ -107,10 +107,10 @@ module Webocracy
 
         it 'propagates decisions to comrades' do
           #pending "Thinking..."
-          d = new_decision 1, bob.person
-          @proposition << d
-          puts d.inspect
-          puts @proposition.decisions.first.inspect
+          #d = new_decision 1, bob.person
+          #@proposition << d
+          #puts d.inspect
+          #puts @proposition.decisions.first.inspect
         end
 
       end
