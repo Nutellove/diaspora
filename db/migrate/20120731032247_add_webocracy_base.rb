@@ -1,5 +1,10 @@
+# rake db:reset
+# rake db:build
+# rake db:test:prepare
+
 class AddWebocracyBase < ActiveRecord::Migration
   def self.up
+
     # DECISIONS
     create_table :decisions do |t|
       t.integer :value, :default => 0
@@ -22,11 +27,14 @@ class AddWebocracyBase < ActiveRecord::Migration
       t.integer :person_id
     end
 
+    # PROPOSITIONS
+    add_column(:posts, :closed, :boolean, :default => false)
 
   end
 
   def self.down
-    drop_table :decisions
+    remove_column(:posts, :closed)
     drop_table :delegations
+    drop_table :decisions
   end
 end

@@ -25,42 +25,46 @@ module Webocracy
       describe 'Adding' do
 
         it "should not find eve in alice's delegates" do
-          alice.delegates.include?(eve.person).should be_false
+          alice.delegates.should_not include eve.person
         end
         it "should find eve in alice's delegates after we create a Delegation" do
           alice.delegations.create(:person => eve.person)
-          alice.delegates.include?(eve.person).should be_true
+          alice.delegates.should include eve.person
         end
         it "should find eve in alice's delegates after we build a Delegation" do
           d = FactoryGirl.build(:webocracy_delegation, { :user => alice, :person => eve.person })
           alice.delegations << d
-          alice.delegates.include?(eve.person).should be_true
+          alice.delegates.should include eve.person
         end
         it "should ignore foreign delegations" do
           d = FactoryGirl.build(:webocracy_delegation, { :user => bob, :person => eve.person })
           alice.delegations << d
-          alice.delegates.include?(eve.person).should be_false
+          alice.delegates.should_not include eve.person
         end
         it "should find eve in alice's delegates after we add her in Person" do
           alice.delegates << eve.person
-          alice.delegates.include?(eve.person).should be_true
+          alice.delegates.should include eve.person
           alice.delegations.find_all{ |d| d.person == eve.person }.length.should == 1
         end
         it 'does not allow you to target yourself' do
           delegation = alice.delegations.create(:person => alice.person)
           delegation.should have(1).error_on(:person_id)
+          alice.delegations << delegation # another way
+          alice.delegates.should_not include alice.person
+          alice.delegates << alice # another way
+          alice.delegates.should_not include alice.person
         end
 
         describe '#user.delegations.<<' do
 
           it 'allows Users' do
             alice.delegations << eve
-            alice.delegates.include?(eve.person).should be_true
+            alice.delegates.should include eve.person
           end
 
           it 'allows Persons' do
             alice.delegations << eve.person
-            alice.delegates.include?(eve.person).should be_true
+            alice.delegates.should include eve.person
           end
 
         end
@@ -103,10 +107,10 @@ module Webocracy
 
         it 'propagates decisions to comrades' do
           #pending "Thinking..."
-          d = new_decision 1, bob.person
-          @proposition << d
-          puts d.inspect
-          puts @proposition.decisions.first.inspect
+          #d = new_decision 1, bob.person
+          #@proposition << d
+          #puts d.inspect
+          #puts @proposition.decisions.first.inspect
         end
 
       end

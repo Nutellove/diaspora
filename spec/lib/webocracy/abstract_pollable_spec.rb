@@ -15,7 +15,7 @@ module Webocracy
       extend HelperMethods
     end
 
-    describe 'Opening & Closing' do
+    context 'Opening & Closing' do
       it 'should be open at first' do
         @generic_pollable.closed.should == false
       end
@@ -26,7 +26,7 @@ module Webocracy
       end
     end
 
-    describe 'Adding Decisions' do
+    context 'Adding Decisions' do
 
       describe 'General' do
         it 'must work' do
@@ -34,6 +34,7 @@ module Webocracy
           @generic_pollable << d
           @generic_pollable.count.should == 1
         end
+
       end
 
       describe 'Same author' do
@@ -51,7 +52,7 @@ module Webocracy
 
     end
 
-    describe 'Revoking decisions' do
+    context 'Revoking decisions' do
       before do
         @d1 = new_decision 1, bob.person
         @d2 = new_decision 0, bob.person

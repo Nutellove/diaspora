@@ -10,7 +10,7 @@ module Webocracy
       model.class_eval do
 
         has_many :delegations, :class_name => Webocracy::Delegation, :extend => Webocracy::DelegationExtension
-        has_many :delegates, :through => :delegations, :source => :person
+        has_many :delegates, :through => :delegations, :source => :person, :extend => Webocracy::DelegateExtension
 
       end
     end
@@ -39,6 +39,19 @@ module Webocracy
         Decision.where(:author_id => self.person.id, :target_type => target.class.base_class.to_s, :target_id => target.id).first
       end
     end
+
+    def receives_decision!(decision)
+      unless decided_on? decision.target
+        if has_as_delegate? decision.author
+          decision.target.decisions.create :author => person, :value => decision.value
+        end
+      end
+    end
+
+    def has_as_delegate?(person)
+      delegates.include? person
+    end
+
 
 
 

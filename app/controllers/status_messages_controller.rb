@@ -34,7 +34,7 @@ class StatusMessagesController < ApplicationController
   def bookmarklet
     @aspects = current_user.aspects
     @aspect_ids = @aspects.map{|x| x.id}
-    if ! is_mobile_device?
+    unless is_mobile_device?
       render :layout => nil
     end
   end
@@ -103,9 +103,8 @@ class StatusMessagesController < ApplicationController
     # mobile || desktop conditions
     sm = params[:status_message]
     public_flag = (sm[:aspect_ids] && sm[:aspect_ids].first == 'public') || sm[:public]
-    public_flag.to_s.match(/(true)|(on)/) ? public_flag = true : public_flag = false
+    public_flag = public_flag.to_s.match(/(true)|(on)/)
     params[:status_message][:public] = public_flag
-    public_flag
   end
 
   def remove_getting_started
