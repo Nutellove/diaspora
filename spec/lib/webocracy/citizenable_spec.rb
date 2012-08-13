@@ -64,7 +64,7 @@ module Webocracy
 
           describe '#receives_decision' do
             before do
-              bob.receives_decision @alices_decision
+              bob.receives_decision! @alices_decision
               @bobs_decision = bob.decision_for @proposition
             end
             it 'copies the passed decision' do
@@ -85,7 +85,7 @@ module Webocracy
             end
             describe '#receives_decision' do
               before do
-                bob.receives_decision @alices_decision
+                bob.receives_decision! @alices_decision
                 @bobs_decision_after = bob.decision_for @proposition
               end
               it "does not update bob's decision" do
@@ -100,7 +100,7 @@ module Webocracy
             end
             describe '#receives_decision' do
               before do
-                bob.receives_decision @alices_decision
+                bob.receives_decision! @alices_decision
                 @bobs_decision_after = bob.decision_for @proposition
               end
               it "does not update bob's decision" do

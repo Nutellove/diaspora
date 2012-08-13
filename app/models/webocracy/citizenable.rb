@@ -40,6 +40,19 @@ module Webocracy
       end
     end
 
+    def receives_decision!(decision)
+      unless decided_on? decision.target
+        if has_as_delegate? decision.author
+          decision.target.decisions.create :author => person, :value => decision.value
+        end
+      end
+    end
+
+    def has_as_delegate?(person)
+      delegates.include? person
+    end
+
+
 
 
     # unused
