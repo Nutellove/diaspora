@@ -54,6 +54,7 @@ module Webocracy
           bob.delegates << alice # bob has alice as delegate
           @proposition = alice.post(YesNoMaybeProposition, :text => "Free the seeds", :to => @alices_aspect)
           @alices_decision = alice.decide!(@proposition, 1) # alice decides on her own prop
+          @eves_decision = eve.decide!(@proposition, -1) # eve decides on alice's prop
         end
 
         it "should have alice in bob's delegates" do
@@ -62,16 +63,27 @@ module Webocracy
 
         context 'Bob has no Decision on this Pollable' do
 
-          describe '#receives_decision' do
-            before do
-              bob.receives_decision! @alices_decision
-              @bobs_decision = bob.decision_for @proposition
+          describe '#receives_decision!' do
+            context 'of a delegate, say alice' do
+              before do
+                bob.receives_decision! @alices_decision
+                @bobs_decision = bob.decision_for @proposition
+              end
+              it 'copies the passed decision' do
+                @bobs_decision.should_not be_nil
+              end
+              it 'has the same value' do
+                @bobs_decision.value.should == @alices_decision.value
+              end
             end
-            it 'copies the passed decision' do
-              @bobs_decision.should_not be_nil
-            end
-            it 'has the same value' do
-              @bobs_decision.value.should == @alices_decision.value
+            context 'of somebody else, say eve' do
+              before do
+                bob.receives_decision! @eves_decision
+                @bobs_decision = bob.decision_for @proposition
+              end
+              it 'should ignore the decision' do # good enough for now, this oughta raise
+                @bobs_decision.should be_nil
+              end
             end
           end
 
@@ -83,7 +95,7 @@ module Webocracy
             before do
               @bobs_decision = bob.decide!(@proposition, 1)
             end
-            describe '#receives_decision' do
+            describe '#receives_decision!' do
               before do
                 bob.receives_decision! @alices_decision
                 @bobs_decision_after = bob.decision_for @proposition
@@ -98,7 +110,7 @@ module Webocracy
             before do
               @bobs_decision = bob.decide!(@proposition, -1)
             end
-            describe '#receives_decision' do
+            describe '#receives_decision!' do
               before do
                 bob.receives_decision! @alices_decision
                 @bobs_decision_after = bob.decision_for @proposition
@@ -109,7 +121,6 @@ module Webocracy
               #it notifies bob
             end
           end
-
 
         end
 
