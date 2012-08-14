@@ -99,11 +99,17 @@ module Webocracy
     describe 'Decision Propagation' do
 
       before do
-        @alices_proposition = FactoryGirl.build(:webocracy_yes_no_maybe_proposition, :author => eve.person)
+        @eves_proposition = FactoryGirl.build(:webocracy_yes_no_maybe_proposition, :author => eve.person)
         alice.delegates << bob.person
       end
 
       describe 'Workflow' do
+
+        it 'test' do
+
+
+
+        end
 
         it 'propagates decisions to comrades' do
           #pending "Thinking..."

@@ -61,6 +61,28 @@ module Webocracy
           bob.delegates.should include alice.person
         end
 
+        describe DecisionFetcher do
+
+          describe '#get_from' do
+            it 'gets the decisions of the local person' do
+              DecisionFetcher.get_from(alice.person).should include @alices_decision
+              DecisionFetcher.get_from(alice.person).should_not include @eves_decision
+              DecisionFetcher.get_from(bob.person).count.should == 0
+            end
+          end
+
+          describe '#get_from_delegates_of' do
+            context 'without options' do
+              it 'gets the non-conflicting decisions of the delegates' do
+                DecisionFetcher.get_from_delegates_of(bob.person).should include @alices_decision
+                DecisionFetcher.get_from_delegates_of(bob.person).count.should == 1
+              end
+            end
+          end
+
+        end
+
+
         context 'Bob has no Decision on this Pollable' do
 
           describe '#receives_decision!' do
