@@ -99,7 +99,7 @@ module Webocracy
     describe 'Decision Propagation' do
 
       before do
-        @proposition = FactoryGirl.build(:webocracy_yes_no_maybe_proposition, :author => eve.person)
+        @alices_proposition = FactoryGirl.build(:webocracy_yes_no_maybe_proposition, :author => eve.person)
         alice.delegates << bob.person
       end
 

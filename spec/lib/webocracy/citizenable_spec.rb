@@ -18,16 +18,16 @@ module Webocracy
         before do
           @alices_aspect = alice.aspects.where(:name => "generic").first
           @bobs_aspect = bob.aspects.where(:name => "generic").first
-          @proposition = alice.post(YesNoMaybeProposition, :text => "Free the seeds", :to => @alices_aspect)
+          @alices_proposition = alice.post(YesNoMaybeProposition, :text => "Free the seeds", :to => @alices_aspect)
           @proposition2 = bob.post(YesNoMaybeProposition, :text => "Drop Hadopi and back Kickstarter", :to => @bobs_aspect)
-          @decision = alice.decide!(@proposition, 1) # alice decides on her own prop
-          @decision2 = bob.decide!(@proposition, 1) # bob decides on alice's prop
+          @alices_decision = alice.decide!(@alices_proposition, 1) # alice decides on her own prop
+          @bobs_decision = bob.decide!(@alices_proposition, 1) # bob decides on alice's prop
         end
 
         describe '#decision_for' do
           it 'returns the correct decision' do
-            alice.decision_for(@proposition).should == @decision
-            bob.decision_for(@proposition).should == @decision2
+            alice.decision_for(@alices_proposition).should == @alices_decision
+            bob.decision_for(@alices_proposition).should == @bobs_decision
           end
 
           it "returns nil if there's no decision" do
@@ -37,8 +37,8 @@ module Webocracy
 
         describe '#decided_on?' do
           it "returns true if there's a decision" do
-            alice.decided_on?(@proposition).should be_true
-            bob.decided_on?(@proposition).should be_true
+            alice.decided_on?(@alices_proposition).should be_true
+            bob.decided_on?(@alices_proposition).should be_true
           end
 
           it "returns false if there's no decision" do
@@ -52,9 +52,9 @@ module Webocracy
         before do
           @alices_aspect = alice.aspects.where(:name => "generic").first
           bob.delegates << alice # bob has alice as delegate
-          @proposition = alice.post(YesNoMaybeProposition, :text => "Free the seeds", :to => @alices_aspect)
-          @alices_decision = alice.decide!(@proposition, 1) # alice decides on her own prop
-          @eves_decision = eve.decide!(@proposition, -1) # eve decides on alice's prop
+          @alices_proposition = alice.post(YesNoMaybeProposition, :text => "Free the seeds", :to => @alices_aspect)
+          @alices_decision = alice.decide!(@alices_proposition, 1) # alice decides on her own prop
+          @eves_decision = eve.decide!(@alices_proposition, -1) # eve decides on alice's prop
         end
 
         it "should have alice in bob's delegates" do
@@ -67,7 +67,7 @@ module Webocracy
             context 'of a delegate, say alice' do
               before do
                 bob.receives_decision! @alices_decision
-                @bobs_decision = bob.decision_for @proposition
+                @bobs_decision = bob.decision_for @alices_proposition
               end
               it 'copies the passed decision' do
                 @bobs_decision.should_not be_nil
@@ -79,7 +79,7 @@ module Webocracy
             context 'of somebody else, say eve' do
               before do
                 bob.receives_decision! @eves_decision
-                @bobs_decision = bob.decision_for @proposition
+                @bobs_decision = bob.decision_for @alices_proposition
               end
               it 'should ignore the decision' do # good enough for now, this oughta raise
                 @bobs_decision.should be_nil
@@ -93,12 +93,12 @@ module Webocracy
 
           context 'and it is the same' do
             before do
-              @bobs_decision = bob.decide!(@proposition, 1)
+              @bobs_decision = bob.decide!(@alices_proposition, 1)
             end
             describe '#receives_decision!' do
               before do
                 bob.receives_decision! @alices_decision
-                @bobs_decision_after = bob.decision_for @proposition
+                @bobs_decision_after = bob.decision_for @alices_proposition
               end
               it "does not update bob's decision" do
                 @bobs_decision_after.should == @bobs_decision
@@ -108,12 +108,12 @@ module Webocracy
 
           context 'and it is not the same' do
             before do
-              @bobs_decision = bob.decide!(@proposition, -1)
+              @bobs_decision = bob.decide!(@alices_proposition, -1)
             end
             describe '#receives_decision!' do
               before do
                 bob.receives_decision! @alices_decision
-                @bobs_decision_after = bob.decision_for @proposition
+                @bobs_decision_after = bob.decision_for @alices_proposition
               end
               it "does not update bob's decision" do
                 @bobs_decision_after.should == @bobs_decision
