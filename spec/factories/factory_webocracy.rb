@@ -17,16 +17,16 @@ FactoryGirl.define do
   end
 
   factory :webocracy_yes_no_maybe_proposition, :class => Webocracy::YesNoMaybeProposition do
-    sequence(:text) { |n| "YNM Propal #{n}" }
+    sequence(:text) { |n| "Free the Seeds #{n}" }
     association :author, :factory => :person
     after_build do |this|
       this.diaspora_handle = this.author.diaspora_handle
     end
   end
 
-  factory :webocracy_decision_without_target, :class => Webocracy::Decision do
-    association :author, :factory => :person
-    #association :target, :factory => :proposition
+  factory :webocracy_vote, :class => Webocracy::Vote do
+    association :voter,   :factory => :person
+    association :votable, :factory => :webocracy_yes_no_maybe_proposition
   end
 
   factory :webocracy_delegation, :class => Webocracy::Delegation do
