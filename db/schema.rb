@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120803143552) do
+ActiveRecord::Schema.define(:version => 20120815030653) do
 
   create_table "account_deletions", :force => true do |t|
     t.string  "diaspora_handle"
@@ -107,22 +107,6 @@ ActiveRecord::Schema.define(:version => 20120803143552) do
   end
 
   add_index "conversations", ["author_id"], :name => "conversations_author_id_fk"
-
-  create_table "decisions", :force => true do |t|
-    t.integer  "value",                   :default => 0
-    t.integer  "target_id"
-    t.string   "target_type"
-    t.integer  "author_id"
-    t.string   "guid"
-    t.text     "author_signature"
-    t.text     "parent_author_signature"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
-  end
-
-  add_index "decisions", ["author_id"], :name => "decisions_author_id_fk"
-  add_index "decisions", ["guid"], :name => "index_decisions_on_guid", :unique => true
-  add_index "decisions", ["target_id"], :name => "index_decisions_on_target_id"
 
   create_table "delegations", :force => true do |t|
     t.integer "user_id"
@@ -482,6 +466,20 @@ ActiveRecord::Schema.define(:version => 20120803143552) do
   add_index "users", ["remember_token"], :name => "index_users_on_remember_token", :unique => true
   add_index "users", ["username"], :name => "index_users_on_username", :unique => true
 
+  create_table "votes", :force => true do |t|
+    t.integer  "votable_id"
+    t.string   "votable_type"
+    t.integer  "voter_id"
+    t.string   "voter_type"
+    t.string   "guid"
+    t.integer  "value",        :default => 0
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+  end
+
+  add_index "votes", ["votable_id", "votable_type"], :name => "index_votes_on_votable_id_and_votable_type"
+  add_index "votes", ["voter_id", "voter_type"], :name => "index_votes_on_voter_id_and_voter_type"
+
   add_foreign_key "aspect_memberships", "aspects", :name => "aspect_memberships_aspect_id_fk", :dependent => :delete
   add_foreign_key "aspect_memberships", "contacts", :name => "aspect_memberships_contact_id_fk", :dependent => :delete
 
@@ -495,8 +493,6 @@ ActiveRecord::Schema.define(:version => 20120803143552) do
   add_foreign_key "conversation_visibilities", "people", :name => "conversation_visibilities_person_id_fk", :dependent => :delete
 
   add_foreign_key "conversations", "people", :name => "conversations_author_id_fk", :column => "author_id", :dependent => :delete
-
-  add_foreign_key "decisions", "people", :name => "decisions_author_id_fk", :column => "author_id"
 
   add_foreign_key "invitations", "users", :name => "invitations_recipient_id_fk", :column => "recipient_id", :dependent => :delete
   add_foreign_key "invitations", "users", :name => "invitations_sender_id_fk", :column => "sender_id", :dependent => :delete
