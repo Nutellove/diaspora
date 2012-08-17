@@ -75,7 +75,7 @@ gem 'acts_as_api'
 
 # Webocracy
 
-gem 'acts_as_votable', :git => 'https://github.com/Nutellove/acts_as_votable.git'
+gem 'acts_as_votable', '~> 0.4.5', :git => 'https://github.com/Nutellove/acts_as_votable.git'
 
 # localization
 

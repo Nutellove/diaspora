@@ -9,9 +9,9 @@ GIT
 
 GIT
   remote: https://github.com/Nutellove/acts_as_votable.git
-  revision: c7a3b12ef730f60b3cb6c1376b459afa80354da2
+  revision: cce1caef4916e5f3aa3efdbe86f4b8417d9a53b2
   specs:
-    acts_as_votable (0.4.4)
+    acts_as_votable (0.4.5)
       rails (>= 3.0.0)
 
 GIT
@@ -477,7 +477,7 @@ DEPENDENCIES
   activerecord-import (~> 0.2.9)
   acts-as-taggable-on!
   acts_as_api
-  acts_as_votable!
+  acts_as_votable (~> 0.4.5)!
   addressable (~> 2.2)
   airbrake
   asset_sync
