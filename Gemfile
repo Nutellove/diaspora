@@ -73,6 +73,10 @@ gem 'mini_magick', '3.4'
 gem 'json'
 gem 'acts_as_api'
 
+# Webocracy
+
+gem 'acts_as_votable', :git => 'https://github.com/Nutellove/acts_as_votable.git'
+
 # localization
 
 gem 'i18n-inflector-rails', '~> 1.0'
