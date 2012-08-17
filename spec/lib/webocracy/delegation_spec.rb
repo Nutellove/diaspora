@@ -108,7 +108,6 @@ module Webocracy
         it 'test' do
 
 
-
         end
 
         it 'propagates decisions to comrades' do
