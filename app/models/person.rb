@@ -10,6 +10,8 @@ class Person < ActiveRecord::Base
   include Encryptor::Public
   include Diaspora::Guid
 
+  acts_as_voter
+
   # NOTE API V1 to be extracted
   acts_as_api
   api_accessible :backbone do |t|
@@ -49,7 +51,7 @@ class Person < ActiveRecord::Base
 
   has_many :roles
 
-  belongs_to :owner, :class_name => 'User'
+  belongs_to :owner, :class_name => User
 
   has_many :notification_actors
   has_many :notifications, :through => :notification_actors
