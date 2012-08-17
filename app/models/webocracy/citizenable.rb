@@ -15,35 +15,61 @@ module Webocracy
       end
     end
 
-    def decide!(target, value, opts={})
-      find_or_create_participation!(target)
-      Decision::Generator.new(self, target).create!(opts.merge(:value => value))
+    #def decide!(target, value, opts={})
+    #  find_or_create_participation!(target)
+    #  Decision::Generator.new(self, target).create!(opts.merge(:value => value))
+    #end
+
+    # handy alias
+    def vote(target, value, opts={})
+      person.vote opts.merge(:votable => target, :value => value)
     end
 
-    # Check whether the user has decided on a AbstractPollable.
-    # this is a carbon copy of liked?
-    def decided_on?(target)
-      if target.decisions.loaded?
-        self.decision_for(target) ? true : false
-      else
-        Decision.exists?(:author_id => self.person.id, :target_type => target.class.base_class.to_s, :target_id => target.id)
-      end
+    ## Check whether the user has decided on a AbstractPollable.
+    ## this is a carbon copy of liked?
+    #def decided_on?(target)
+    #  if target.decisions.loaded?
+    #    self.decision_for(target) ? true : false
+    #  else
+    #    Decision.exists?(:author_id => self.person.id, :target_type => target.class.base_class.to_s, :target_id => target.id)
+    #  end
+    #end
+
+    # Check whether the user has voted on a Votable.
+    def voted_on?(target)
+      target.voted_on_by? person
     end
 
-    # Get the user's decision on an AbstractPollable, if there is one.
+    ## Get the user's decision on an AbstractPollable, if there is one.
+    ## @return [Decision]
+    #def vote_for(target)
+    #  if target.decisions.loaded?
+    #    target.decisions.detect{ |decision| decision.author_id == self.person.id }
+    #  else
+    #    Decision.where(:author_id => self.person.id, :target_type => target.class.base_class.to_s, :target_id => target.id).first
+    #  end
+    #end
+
+    # Get the user's Vote on an Votable, if there is one.
     # @return [Decision]
-    def decision_for(target)
-      if target.decisions.loaded?
-        target.decisions.detect{ |decision| decision.author_id == self.person.id }
-      else
-        Decision.where(:author_id => self.person.id, :target_type => target.class.base_class.to_s, :target_id => target.id).first
-      end
+    def find_vote_for(target)
+      target.vote_of person
     end
 
-    def receives_decision!(decision)
-      unless decided_on? decision.target
-        if has_as_delegate? decision.author
-          decision.target.decisions.create :author => person, :value => decision.value
+    def find_vote_on(target); find_vote_for(target) end
+
+    #def receives_decision!(decision)
+    #  unless voted_on? decision.target
+    #    if has_as_delegate? decision.author
+    #      decision.target.decisions.create :author => person, :value => decision.value
+    #    end
+    #  end
+    #end
+
+    def receives_vote!(vote)
+      unless voted_on? vote.votable
+        if has_as_delegate? vote.voter
+          vote.votable.vote :voter => person, :value => vote.value
         end
       end
     end
@@ -56,14 +82,14 @@ module Webocracy
 
 
     # unused
-    def political_aspect
-      aspects.each do |aspect|
-        if 'Politics' == aspect.name
-          return aspect
-        end
-      end
-      raise "No 'Politics' aspect found."
-    end
+    #def political_aspect
+    #  aspects.each do |aspect|
+    #    if 'Politics' == aspect.name
+    #      return aspect
+    #    end
+    #  end
+    #  raise "No 'Politics' aspect found."
+    #end
 
   end
 end

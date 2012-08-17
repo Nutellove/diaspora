@@ -6,6 +6,6 @@
 
 class Webocracy::GenericProposition < Webocracy::AbstractProposition
 
-  include Webocracy::GenericPollable
+  #include Webocracy::GenericPollable
 
 end

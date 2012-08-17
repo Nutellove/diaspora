@@ -6,6 +6,6 @@
 
 class Webocracy::YesNoMaybeProposition < Webocracy::AbstractProposition
 
-  include Webocracy::YesNoMaybePollable
+  #include Webocracy::YesNoMaybePollable
 
 end

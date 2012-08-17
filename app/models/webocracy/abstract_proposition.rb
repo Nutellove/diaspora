@@ -8,4 +8,8 @@ class Webocracy::AbstractProposition < Post
 
   self.abstract_class = true
 
+  attr_accessible :closed
+
+  acts_as_votable
+
 end
