@@ -51,27 +51,19 @@ module Webocracy
     #end
 
     # Get the user's Vote on an Votable, if there is one.
-    # @return [Decision]
-    def find_vote_for(target)
+    # @return Vote
+    def find_vote_on(target)
       target.vote_of person
     end
-
-    def find_vote_on(target); find_vote_for(target) end
-
-    #def receives_decision!(decision)
-    #  unless voted_on? decision.target
-    #    if has_as_delegate? decision.author
-    #      decision.target.decisions.create :author => person, :value => decision.value
-    #    end
-    #  end
-    #end
+    alias :find_vote_for :find_vote_on
 
     def receives_vote!(vote)
       unless voted_on? vote.votable
         if has_as_delegate? vote.voter
-          vote.votable.vote :voter => person, :value => vote.value
+          return vote.votable.vote :voter => person, :value => vote.value
         end
       end
+      false
     end
 
     def has_as_delegate?(person)

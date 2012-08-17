@@ -45,7 +45,7 @@ module Webocracy
             bob.voted_on?(@alices_proposition).should be_true
           end
 
-          it "returns false if there's no decision" do
+          it "returns false if there's no vote" do
             alice.voted_on?(@proposition2).should be_false
           end
         end
@@ -89,27 +89,30 @@ module Webocracy
         #end
 
 
-        context 'Bob has no Decision on this Pollable' do
+        context 'Bob has no Vote on this Pollable' do
 
           describe '#receives_vote!' do
             context 'of a delegate, say alice' do
               before do
-                bob.receives_vote! @alices_decision
+                @success = bob.receives_vote! @alices_vote
                 @bobs_vote = bob.find_vote_for @alices_proposition
               end
-              it 'copies the passed decision' do
+              it 'returns true' do
+                @success.should be true
+              end
+              it 'copies the passed vote' do
                 @bobs_vote.should_not be_nil
               end
               it 'has the same value' do
-                @bobs_vote.value.should == @alices_decision.value
+                @bobs_vote.value.should == @alices_vote.value
               end
             end
             context 'of somebody else, say eve' do
               before do
-                bob.receives_vote! @eves_decision
+                bob.receives_vote! @eves_vote
                 @bobs_vote = bob.find_vote_for @alices_proposition
               end
-              it 'should ignore the decision' do # good enough for now, this oughta raise
+              it 'should ignore the vote' do # good enough for now, this oughta raise
                 @bobs_vote.should be_nil
               end
             end
@@ -117,34 +120,40 @@ module Webocracy
 
         end
 
-        context 'Bob already has a Decision on the Pollable' do
+        context 'Bob already has a Vote on the Pollable' do
 
           context 'and it is the same' do
             before do
-              @bobs_vote = bob.vote(@alices_proposition, 1)
+              bob.vote(@alices_proposition, 1)
+              @bobs_vote = bob.find_vote_for @alices_proposition
             end
             describe '#receives_vote!' do
               before do
-                bob.receives_vote! @alices_decision
-                @bobs_vote_after = bob.find_vote_for @alices_proposition
+                @success = bob.receives_vote! @alices_vote
               end
-              it "does not update bob's decision" do
-                @bobs_vote_after.should == @bobs_vote
+              it "returns false" do
+                @success.should be false
+              end
+              it "does not update bob's vote" do
+                bob.person.voted_as_when_voting_on(@alices_proposition).should == 1
               end
             end
           end
 
           context 'and it is not the same' do
             before do
-              @bobs_vote = bob.vote(@alices_proposition, -1)
+              bob.vote(@alices_proposition, -1)
+              @bobs_vote = bob.find_vote_for @alices_proposition
             end
             describe '#receives_vote!' do
               before do
-                bob.receives_vote! @alices_decision
-                @bobs_vote_after = bob.find_vote_for @alices_proposition
+                @success = bob.receives_vote! @alices_vote
               end
-              it "does not update bob's decision" do
-                @bobs_vote_after.should == @bobs_vote
+              it "returns false" do
+                @success.should be false
+              end
+              it "does not update bob's vote" do
+                bob.person.voted_as_when_voting_on(@alices_proposition).should == 1
               end
               #it notifies bob
             end
