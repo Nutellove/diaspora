@@ -10,6 +10,6 @@ class Webocracy::AbstractProposition < Post
 
   attr_accessible :closed
 
-  acts_as_votable
+  acts_as_votable :class => Webocracy::Vote
 
 end

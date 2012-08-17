@@ -10,7 +10,7 @@ class Person < ActiveRecord::Base
   include Encryptor::Public
   include Diaspora::Guid
 
-  acts_as_voter
+  acts_as_voter :class => Webocracy::Vote
 
   # NOTE API V1 to be extracted
   acts_as_api
