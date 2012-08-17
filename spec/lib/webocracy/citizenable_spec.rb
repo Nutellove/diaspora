@@ -153,7 +153,7 @@ module Webocracy
                 @success.should be false
               end
               it "does not update bob's vote" do
-                bob.person.voted_as_when_voting_on(@alices_proposition).should == 1
+                bob.person.voted_as_when_voting_on(@alices_proposition).should == -1
               end
               #it notifies bob
             end
