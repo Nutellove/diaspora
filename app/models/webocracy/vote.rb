@@ -9,5 +9,12 @@ module Webocracy
 
     include ActsAsVotable::VoteBehavior
 
+    attr_accessible :delegate, :delegate_id, :delegate_type
+
+    belongs_to :delegate, :polymorphic => true
+
+
+
+
   end
 end

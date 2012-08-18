@@ -25,30 +25,10 @@ module Webocracy
       person.vote opts.merge(:votable => target, :value => value)
     end
 
-    ## Check whether the user has decided on a AbstractPollable.
-    ## this is a carbon copy of liked?
-    #def decided_on?(target)
-    #  if target.decisions.loaded?
-    #    self.decision_for(target) ? true : false
-    #  else
-    #    Decision.exists?(:author_id => self.person.id, :target_type => target.class.base_class.to_s, :target_id => target.id)
-    #  end
-    #end
-
     # Check whether the user has voted on a Votable.
     def voted_on?(target)
       target.voted_on_by? person
     end
-
-    ## Get the user's decision on an AbstractPollable, if there is one.
-    ## @return [Decision]
-    #def vote_for(target)
-    #  if target.decisions.loaded?
-    #    target.decisions.detect{ |decision| decision.author_id == self.person.id }
-    #  else
-    #    Decision.where(:author_id => self.person.id, :target_type => target.class.base_class.to_s, :target_id => target.id).first
-    #  end
-    #end
 
     # Get the user's Vote on an Votable, if there is one.
     # @return Vote
@@ -57,10 +37,17 @@ module Webocracy
     end
     alias :find_vote_for :find_vote_on
 
+    # Inherits the passed vote if it comes from a delegate
     def receives_vote!(vote)
       unless voted_on? vote.votable
         if has_as_delegate? vote.voter
-          return vote.votable.vote :voter => person, :value => vote.value
+          success = vote.votable.vote :voter => person, :value => vote.value, :delegate => vote.voter
+          if success
+            new_vote = person.find_vote_on vote.votable
+            new_vote.delegate = vote.voter
+            return new_vote.save
+          end
+          return success
         end
       end
       false

@@ -471,10 +471,12 @@ ActiveRecord::Schema.define(:version => 20120815030653) do
     t.string   "votable_type"
     t.integer  "voter_id"
     t.string   "voter_type"
+    t.integer  "delegate_id"
+    t.string   "delegate_type"
     t.string   "guid"
-    t.integer  "value",        :default => 0
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.integer  "value",         :default => 0
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
   end
 
   add_index "votes", ["votable_id", "votable_type"], :name => "index_votes_on_votable_id_and_votable_type"

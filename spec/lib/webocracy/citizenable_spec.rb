@@ -21,7 +21,7 @@ module Webocracy
           @alices_proposition = alice.post(YesNoMaybeProposition, :text => "Free the seeds", :to => @alices_aspect)
           @proposition2 = bob.post(YesNoMaybeProposition, :text => "Drop Hadopi and back Kickstarter", :to => @bobs_aspect)
           alice.vote(@alices_proposition, 1) # alice votes on her own prop
-          bob.vote(@alices_proposition, 1)   # bob votes on alice's prop
+          bob.vote(@alices_proposition, 1) # bob votes on alice's prop
         end
 
         describe '#find_vote_for' do
@@ -67,28 +67,6 @@ module Webocracy
           bob.delegates.should include alice.person
         end
 
-        #describe DecisionFetcher do
-        #
-        #  describe '#get_from' do
-        #    it 'gets the decisions of the local person' do
-        #      DecisionFetcher.get_from(alice.person).should include @alices_decision
-        #      DecisionFetcher.get_from(alice.person).should_not include @eves_decision
-        #      DecisionFetcher.get_from(bob.person).count.should == 0
-        #    end
-        #  end
-        #
-        #  describe '#get_from_delegates_of' do
-        #    context 'without options' do
-        #      it 'gets the non-conflicting decisions of the delegates' do
-        #        DecisionFetcher.get_from_delegates_of(bob.person).should include @alices_decision
-        #        DecisionFetcher.get_from_delegates_of(bob.person).count.should == 1
-        #      end
-        #    end
-        #  end
-        #
-        #end
-
-
         context 'Bob has no Vote on this Votable' do
 
           describe '#receives_vote!' do
@@ -103,8 +81,13 @@ module Webocracy
               it 'copies the passed vote' do
                 @bobs_vote.should_not be_nil
               end
-              it 'has the same value' do
-                @bobs_vote.value.should == @alices_vote.value
+              describe 'The new vote' do
+                it 'has the same value' do
+                  @bobs_vote.value.should == @alices_vote.value
+                end
+                it 'has a delegate' do
+                  @bobs_vote.delegate.should == alice.person
+                end
               end
             end
             context 'of somebody else, say eve' do
