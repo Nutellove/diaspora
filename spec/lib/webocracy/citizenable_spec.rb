@@ -89,7 +89,7 @@ module Webocracy
         #end
 
 
-        context 'Bob has no Vote on this Pollable' do
+        context 'Bob has no Vote on this Votable' do
 
           describe '#receives_vote!' do
             context 'of a delegate, say alice' do
@@ -120,7 +120,7 @@ module Webocracy
 
         end
 
-        context 'Bob already has a Vote on the Pollable' do
+        context 'Bob already has a Vote on the Votable' do
 
           context 'and it is the same' do
             before do

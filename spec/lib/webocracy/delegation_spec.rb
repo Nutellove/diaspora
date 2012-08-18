@@ -44,7 +44,7 @@ module Webocracy
         it "should find eve in alice's delegates after we add her in Person" do
           alice.delegates << eve.person
           alice.delegates.should include eve.person
-          alice.delegations.find_all{ |d| d.person == eve.person }.length.should == 1
+          alice.delegations.find_all{ |d| d.person == eve.person }.should have(1).delegation
         end
         it 'does not allow you to target yourself' do
           delegation = alice.delegations.create(:person => alice.person)
@@ -64,6 +64,20 @@ module Webocracy
 
           it 'allows Persons' do
             alice.delegations << eve.person
+            alice.delegates.should include eve.person
+          end
+
+        end
+
+        describe '#user.delegates.<<' do
+
+          it 'allows Users' do
+            alice.delegates << eve
+            alice.delegates.should include eve.person
+          end
+
+          it 'allows Persons' do
+            alice.delegates << eve.person
             alice.delegates.should include eve.person
           end
 
