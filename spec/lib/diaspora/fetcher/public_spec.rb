@@ -18,8 +18,8 @@ describe PublicFetcher do
                                 :url => "https://remote-testpod.net",
                                 :diaspora_handle => "testuser@remote-testpod.net"})
 
-    stub_request(:get, /remote-testpod.net\/people\/.*/)
-      .with(:headers => {'Accept'=>'application/json'})
+    stub_request(:get, /remote-testpod.net\/people\/.*/)\
+      .with(:headers => {'Accept'=>'application/json'})\
       .to_return(:body => @fixture)
   end
 
