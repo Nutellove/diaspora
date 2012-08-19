@@ -34,10 +34,15 @@ describe DelegationsController do
       @delegation = alice.delegations.create(:person => eve.person)
     end
 
-    #it "redirects back" do
-    #  delete :destroy, :id => @delegation.id
-    #  response.should be_redirect
-    #end
+    it "redirects back for html" do
+      delete :destroy, :id => @delegation.id
+      response.should be_redirect
+    end
+
+    it "sends a 204 for json" do
+      delete :destroy, :id => @delegation.id, :format => :json
+      response.status.should == 204
+    end
 
     it "removes a delegation" do
       expect {
