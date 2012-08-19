@@ -2,6 +2,9 @@
 #   licensed under the Affero General Public License version 3 or later.  See
 #   the COPYRIGHT file.
 
+
+require 'config/routes/routes_webocracy'
+
 Diaspora::Application.routes.draw do
   if Rails.env.production?
     mount RailsAdmin::Engine => '/admin_panel', :as => 'rails_admin'
